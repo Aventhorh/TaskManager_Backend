@@ -19,6 +19,10 @@ const PostSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    dueDate: {
+      type: Date,
+      required: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

@@ -49,11 +49,14 @@ export const remove = async (req, res) => {
 
 export const create = async (req, res) => {
   try {
+    const { title, text, imageUrl, dueDate } = req.body;
+
     const doc = new PostModel({
-      title: req.body.title,
-      text: req.body.text,
-      imageUrl: req.body.imageUrl,
+      title: title,
+      text: text,
+      imageUrl: imageUrl,
       user: req.userId,
+      dueDate: dueDate,
     });
 
     const post = await doc.save();
@@ -67,14 +70,22 @@ export const create = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const postId = req.params.id;
+    const { title, text, imageUrl, status, dueDate } = req.body;
+    let completedDate = null;
+
+    if (status === "DONE") {
+      completedDate = new Date();
+    }
 
     const updatedPost = await PostModel.findByIdAndUpdate(
       postId,
       {
-        title: req.body.title,
-        text: req.body.text,
-        imageUrl: req.body.imageUrl,
-        user: req.userId,
+        title: title,
+        text: text,
+        imageUrl: imageUrl,
+        status: status,
+        completedDate: completedDate,
+        dueDate: dueDate,
       },
       { new: true }
     );
